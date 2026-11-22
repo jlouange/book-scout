@@ -21,7 +21,7 @@ def get_books():
     try:
 
         url = "https://openlibrary.org/search.json"
-        response = requests.get(url, params=params, timeout=5)
+        response = requests.get(url, params=params, timeout=10)
         response.raise_for_status()
         data = response.json()
 
