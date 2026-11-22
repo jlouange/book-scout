@@ -21,20 +21,19 @@ def display_main_menu():
         display_header()
         try:
             main_menu_choice = int(input(">> "))
-        except Exception as error_one:
+        except ValueError:
             print("Please enter a valid value!")
             continue
 
         if main_menu_choice == 1:
-            print("Choice 1")
+            return "title"
         elif main_menu_choice == 2:
-            print("choice 2")
+            return "author"
         elif main_menu_choice == 3:
-            print("Exiting the program...")
-            break
+            return None
         else:
             print("please enter a valid value!(1-3)")
             continue
 
-if __name__ == "__main__":
-    display_main_menu()
+# if __name__ == "__main__":
+#     display_main_menu()
