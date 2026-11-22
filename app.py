@@ -36,10 +36,14 @@ def get_books():
     except requests.exceptions.JSONDecodeError:
         return {"error":"The external API returned invalid JSON"}, 502
 
-    if not isinstance(data.get("docs"), list):
-        return {"ERROR": "Malformed JSON Response"}, 502
-    books = data.get("docs", [])
 
+    books =data.get("docs", [])
+    if not isinstance(books, list):
+        return {"ERROR": "Malformed JSON Response"}, 502
+
+    for book in books:
+        if not isinstance(book, dict):
+            return {"ERROR": "Invalid book record"}, 502
     formatted_books = []
     for book in books:
         the_book = {"book_id" : book.get("key"),
@@ -50,6 +54,8 @@ def get_books():
 
     the_final_response = {"total": data.get("numFound", 0), "books": formatted_books}
     return the_final_response
-
+@app.route('/api/health')
+def health_check():
+    return {"status": "healthy"}
 if __name__ == "__main__":
     app.run(debug=True, port=5001)
