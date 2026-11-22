@@ -10,7 +10,7 @@ def search_books(search_type, search_term):
 
     try:
 
-        response = requests.get(API_URL, params=params, timeout=10)
+        response = requests.get(API_URL, params=params, timeout=20)
         response.raise_for_status()
     except requests.exceptions.RequestException as error:
         return {"error": f"Request failed: {error}"}
