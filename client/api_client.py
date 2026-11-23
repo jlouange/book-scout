@@ -1,5 +1,5 @@
 import requests
-API_URL = "http://127.0.0.1:5001/api/books"
+API_URL = "https://www.jlmushumba.tech/api/books"
 
 
 def search_books(search_type, search_term):
