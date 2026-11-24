@@ -207,10 +207,10 @@ This section documents how to reproduce the **deployed BookScout API**, not the 
 From your local machine, connect to **web-01** using the school SSH key (adjust the host address):
 
 ```bash
-ssh -i ~/.ssh/school ubuntu@<WEB01_HOST><
-/`W`E`B
-0
-1P_eHrOfSoTr>m steps **B–D** on `7357-web-01` and then repeat the same steps on `7357-web-02` (connect using `<WEB02_HOST><`/)W.E BI0f2 _yHoOuSrT >SSH configuration already defines host aliases, use those aliases instead. The SSH public key must already be authorized on each host; never commit private keys to Git.
+ssh -i ~/.ssh/school ubuntu@<WEB01_HOST>
+```
+
+Perform steps **B–D** on `7357-web-01` and then repeat the same steps on `7357-web-02` (connect using `<WEB02_HOST>`). If your SSH configuration already defines host aliases, use those aliases instead. The SSH public key must already be authorized on each host; never commit private keys to Git.
 
 ### B. Install the application and Python dependencies on *both* web servers
 
@@ -304,9 +304,9 @@ The response should include `X-Served-By` with that server's hostname. Repeat th
 Connect to the provided load-balancer host and install HAProxy if it is not already present:
 
 ```bash
-ssh -i ~/.ssh/school ubuntu@<LOAD_BALANCER_HOST><
-/sLuOdAoD _aBpAtL AuNpCdEaRt_eH
-OsSuTd>o apt install -y haproxy
+ssh -i ~/.ssh/school ubuntu@<LOAD_BALANCER_HOST>
+sudo apt update
+sudo apt install -y haproxy
 ```
 
 In `/etc/haproxy/haproxy.cfg`, preserve the existing `global` and `defaults` sections. The following shows the **relevant frontend/backend pattern**. If the server already has port-80/443 frontends, **merge the ACL and backend routing into those frontends rather than duplicating binds**:
@@ -328,8 +328,9 @@ backend bookscout_servers
     http-check expect status 200
     server web01 <WEB01_REACHABLE_IP>:80 check
     server web02 <WEB02_REACHABLE_IP>:80 check
+```
 
-Replace `<WEB01_REACHABLE_IP>' and  '<WEB02_REACHABLE_IP>' with addresses reachable **from the load balancer**. The `:443` bind expects a valid PEM bundle containing the certificate chain and private key at the specified location, with restricted filesystem permissions. Obtain the certificate through your approved certificate provider and follow [HAProxy's SSL/TLS guidance](https://www.haproxy.com/documentation/haproxy-configuration-tutorials/ssl-tls/). Do **not** store private keys in Git or in the README.
+Replace `<WEB01_REACHABLE_IP>` and `<WEB02_REACHABLE_IP>` with addresses reachable **from the load balancer**. The `:443` bind expects a valid PEM bundle containing the certificate chain and private key at the specified location, with restricted filesystem permissions. Obtain the certificate through your approved certificate provider and follow [HAProxy's SSL/TLS guidance](https://www.haproxy.com/documentation/haproxy-configuration-tutorials/ssl-tls/). Do **not** store private keys in Git or in the README.
 
 Point the `www.jlmushumba.tech` DNS record to the public address of the load balancer. Once the configuration and certificate are in place:
 
