@@ -14,10 +14,36 @@ def get_books():
         return {
             "Error": "400 BAD REQUEST"
             }, 400
+
+    try:
+        limit = int(request.args.get("limit", 3))
+        page = int(request.args.get("page", 1))
+    except ValueError:
+        return {"error": "Limit and page must be integers"}, 400
+
+    if limit < 1 or limit > 20:
+        return {"error": "Limit must be between 1 and 20"}, 400
+
+    if page < 1:
+        return {"error": "Page msut be greater than zero"}, 400
+
+    # to retrieve sorting preference
+
+    sort_order = request.args.get("sort", "relevance").strip().lower()
+
+    allowed_sorts = ["relevance", "new", "old"]
+
+    if sort_order not in allowed_sorts:
+        return {"error": "Invalid sorting option"}, 400
+
     params = {
         search_type : search_term,
-        "limit": 3
+        "limit": limit,
+        "page":page
     }
+
+    if sort_order != "relevance":
+        params["sort"] = sort_order
     try:
 
         url = "https://openlibrary.org/search.json"
@@ -51,8 +77,20 @@ def get_books():
         "book_authors" : book.get("author_name", []),
         "book_pub_year" : book.get("first_publish_year", "")}
         formatted_books.append(the_book)
+    total = data.get("numFound", data.get("num_found", 0))
 
-    the_final_response = {"total": data.get("numFound", 0), "books": formatted_books}
+    total_pages = (total + limit -1) // limit
+
+
+    the_final_response = {
+        "total": total,
+        "page": page,
+        "limit": limit,
+        "total_pages": total_pages,
+        "has_next": page < total_pages,
+        "has_previous": page > 1,
+        "books": formatted_books
+    }
     return the_final_response
 @app.route('/api/health')
 def health_check():

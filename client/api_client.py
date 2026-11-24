@@ -1,11 +1,16 @@
 import requests
 API_URL = "https://www.jlmushumba.tech/api/books"
+#API_URL = "http://127.0.0.1:5001/api/books" # this wa my local development api
 
 
-def search_books(search_type, search_term):
+def search_books(search_type, search_term, limit, page, sort_order="relevance"):
     params = {
         "q": search_term,
-        "type": search_type
+        "type": search_type,
+        "limit": limit,
+        "page": page,
+        "sort": sort_order
+
     }
 
     try:

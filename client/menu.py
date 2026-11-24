@@ -9,7 +9,7 @@ def display_header():
     {"=" * width}
     {title.center(width)}
     {"=" * width}
-    """.strip()
+    """
     print(head)
 
 
