@@ -6,7 +6,7 @@ The CLI is available as a public Docker image, while the production API runs on 
 
 **Quick links:** [Source code](https://github.com/jlouange/book-scout) · [Production API](https://www.jlmushumba.tech/api/books?q=python&type=title) · [Health check](https://www.jlmushumba.tech/api/health) · [Docker image](https://github.com/jlouange?tab=packages)
 
-**Demo video:** _Add the recording link before submission._
+**Demo video:** [Demo Video](https://youtu.be/tn71TqwMjtk)
 
 ## Features
 
@@ -463,5 +463,3 @@ The existing unit tests cover a book search, the health endpoint, and invalid se
 
 - **Source repository:** [jlouange/book-scout](https://github.com/jlouange/book-scout)
 - **Author:** `jlouange` — Software Engineering, African Leadership University.
-
-**Demo video:** _Add the final recording URL here before submission._
